@@ -46,3 +46,17 @@ class CNNBlock(nn.Module):
 
     def forward(self, x):
         return self.silu(self.bn(self.cnn(x)))
+
+class SqueezeExcitation(nn.Module):
+    def __init__(self, in_channels, reduced_dim):
+        super(SqueezeExcitation, self).__init__()
+        self.seq = nn.Sequential(
+            nn.AdaptiveAvgPool2d(1),
+            nn.conv2d(in_channels, reduced_dim, 1),
+            nn.SiLU(),
+            nn.Conv2d(reduced_dim, in_channels),
+            nn.Sigmoid(),
+        )
+
+    def forward(self, x):
+        return x * self.seq(x)
