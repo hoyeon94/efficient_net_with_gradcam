@@ -39,7 +39,8 @@ class CNNBlock(nn.Module):
             kernel_size,
             stride,
             padding,
-            groups=groups
+            groups=groups,
+            bias=False, # bn
         )
         self.bn = nn.BatchNorm2d(out_channels)
         self.silu = nn.Silu()
