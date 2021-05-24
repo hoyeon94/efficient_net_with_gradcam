@@ -26,3 +26,23 @@ phi_values = {
     "b6": (5, 528, 0.5),
     "b7": (6, 600, 0.5),
 }
+
+
+class CNNBlock(nn.Module):
+    def __init__(
+        self, in_channels, out_channels, kernel_size, stride, padding, groups=1
+    ):
+        super(CNNBlock, self).__init__()
+        self.cnn = nn.Conv2d(
+            in_channels,
+            out_channels,
+            kernel_size,
+            stride,
+            padding,
+            groups=groups
+        )
+        self.bn = nn.BatchNorm2d(out_channels)
+        self.silu = nn.Silu()
+
+    def forward(self, x):
+        return self.silu(self.bn(self.cnn(x)))
