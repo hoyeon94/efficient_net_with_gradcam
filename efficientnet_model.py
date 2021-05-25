@@ -114,11 +114,17 @@ class InvertedResidualBlock(nn.Module):
         else:
             return self.conv(x)
         
-class EfficientNet(nn.module):
+class EfficientNet(nn.Module):
     def __init__(self, version, num_classes):
         super(EfficientNet, self).__init__()
         width_factor, depth_factor, dropout_rate = self.calculate_factors(version)
         last_channels = ceil(1280 * width_factor)
+        self.pool = nn.AdaptiveAvgPool2d(1)
+        self.features = self.create_features(width_factor, depth_factor, last_channels)
+        self.classifier = nn.Sequential(
+            nn.Dropout(dropout_rate),
+            nn.Linear(last_channels, num_classes),
+        )
 
     def calculate_factors(self, version, alpha=1.2, beta=1.1):
         phi, res, drop_rate = phi_values[version]
