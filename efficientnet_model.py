@@ -166,7 +166,19 @@ class EfficientNet(nn.Module):
         return self.classifier(x.view(x.shape[0], -1))
 
 
+def test():
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    version = "b0"
+    phi, res, drop_Rate = phi_values[version]
+    num_examples, num_classes = 4, 10
+    x = torch.randn((num_examples, 3, res, res)).to(device)
+    model = EfficientNet(
+        version=version,
+        num_classes=num_classes,
+    ).to(device)
 
+    print(model(x).shape)
 
-
+if __name__ == "__main__":
+    test()
 
