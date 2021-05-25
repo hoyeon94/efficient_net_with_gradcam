@@ -55,9 +55,9 @@ class SqueezeExcitation(nn.Module):
         super(SqueezeExcitation, self).__init__()
         self.seq = nn.Sequential(
             nn.AdaptiveAvgPool2d(1),
-            nn.conv2d(in_channels, reduced_dim, 1),
+            nn.Conv2d(in_channels, reduced_dim, 1),
             nn.SiLU(),
-            nn.Conv2d(reduced_dim, in_channels),
+            nn.Conv2d(reduced_dim, in_channels, 1),
             nn.Sigmoid(),
         )
 
