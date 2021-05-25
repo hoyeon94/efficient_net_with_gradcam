@@ -45,7 +45,7 @@ class CNNBlock(nn.Module):
             bias=False, # bn
         )
         self.bn = nn.BatchNorm2d(out_channels)
-        self.silu = nn.Silu()
+        self.silu = nn.SiLU()
 
     def forward(self, x):
         return self.silu(self.bn(self.cnn(x)))
